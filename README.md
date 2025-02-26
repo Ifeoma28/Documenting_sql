@@ -6,4 +6,5 @@ Danny seriously loves Japanese food so in the beginning of 2021, he decides to e
 ### Objectives 
 Danny wants me to use the data to answer a few simple questions, especially about their visiting patterns.
 He wants to how much money they've spent and which menu food item is their favorite.
-He plans on using these insights to help him decide if he should continue the existing loyalty program 
+He plans on using these insights to help him decide if he should continue the existing loyalty program.
+Also he needs help in generating a new dataset so his team can investigate the data without using sql.
