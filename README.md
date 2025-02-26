@@ -13,10 +13,6 @@ Danny seriously loves Japanese food so in the beginning of 2021, he decides to e
 ## Dataset
 The dataset for this project is sourced from [Danny Ma](https://www.linkedin.com/in/datawithdanny)
 
-![17405894395523300973331890880158]
-(https://github.com/user-attachments/assets/76e81fd4-7fdf-4709-9629-589c9695483b)
-
-
 ## Schema
 
 ## Business Problems and Solutions 
