@@ -18,9 +18,9 @@ The dataset for this project is sourced from [Danny Ma](https://www.linkedin.com
 ## Schema
 
 ## Business Problems and Solutions 
-'''
+```
 CREATE DATABASE pizza;
-'''
+```
 
 
 ## Findings And Solutions 
