@@ -1,5 +1,7 @@
 # Danny's Diner
 
+![17405939689274860221767329938625](https://github.com/user-attachments/assets/3980fcc7-c146-4349-b6b1-dd7ccf2c7c40)
+
 ## Overview 
 Danny seriously loves Japanese food so in the beginning of 2021, he decides to embark upon a risky venture and opens up a cute little restaurant that sells his 3 favourite foods: sushi, curry and ramen.
 
