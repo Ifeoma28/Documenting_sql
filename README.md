@@ -216,12 +216,14 @@ SELECT customer_id,SUM(price) AS total_price,SUM(points) AS total_points
 GROUP BY customer_id;
 ```
 
-## Findings And Solutions
+## Findings 
 - customer B visited the restaurant the most followed by customer A and then C
 - Ramen is the most purchased food item and it was purchased 8 times
 - customer spent more on food items more than customer A before they became a member
 - customer C did not become a member due to the join date
 - Every customer likes Ramen while only customer A and B likes sushi and adding extra points for Sushi shows only customer A and B would benefit since customer C did not join the program
+
+## Solutions 
 - After the customers join the loyalty program, I noticed customers tend to purchase Ramen and Sushi more than before joining the program.
 - This shows that increasing the points customer accrue on purchasing Sushi would boost sales more because customers purchase of Sushi did not change after joining the program.
 - Products that are least purchased should have higher points so customers would purchase them more.
