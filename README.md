@@ -223,6 +223,6 @@ GROUP BY customer_id;
 - customer C did not become a member due to the join date
 - Every customer likes Ramen while only customer A and B likes sushi and adding extra points for Sushi shows only customer A and B would benefit
 - After the customers join the loyalty program, I noticed customers tend to purchase Ramen and Sushi more than before joining the program.
-- This shows that increasing the points customer accrue on purchasing Sushi would boost sales more because customers purchase of Sushi didnt change after joining the program.
+- This shows that increasing the points customer accrue on purchasing Sushi would boost sales more because customers purchase of Sushi did not change after joining the program.
 - Products that are least purchased should have higher points so customers would purchase them more.
-- 
+- Danny could carry out surveys occassionally to know their customer preferences and also opinions on the overall taste of the food to help the restaurant keep up
