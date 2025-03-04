@@ -89,10 +89,10 @@ SELECT sales.customer_id,sum(menu.price) AS total_price
  ORDER BY total_price DESC;
 ```
 - How many days has each customer visited the restaurant (according to customer ID) ?
-- ```
-  SELECT customer_id, COUNT(DISTINCT Order_date) AS no_of_days
+ ```
+ SELECT customer_id, COUNT(DISTINCT Order_date) AS no_of_days
  FROM sales
- GROUP BY customer_id
+ GROUP BY customer_id;
  ```
 - What was the first item from the menu purchased by each customer ?
 ```
