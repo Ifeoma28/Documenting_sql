@@ -79,9 +79,141 @@ FROM members;
 ```
 
 ## Business Problems and Solutions 
+- What is the total amount each customer spent at the restaurant ?
 ```
-CREATE DATABASE pizza;
+SELECT sales.customer_id,sum(menu.price) AS total_price
+ FROM sales 
+ RIGHT JOIN menu ON
+ sales.Product_id = menu.Product_id
+ GROUP  BY sales.customer_id
+ ORDER BY total_price DESC;
 ```
+- How many days has each customer visited the restaurant (according to customer ID) ?
+- ```
+  SELECT customer_id, COUNT(DISTINCT Order_date) AS no_of_days
+ FROM sales
+ GROUP BY customer_id;
+ ```
+- What was the first item from the menu purchased by each customer ?
+```
+SELECT customer_id,product_name AS first_purchased_product,rnk FROM 
+(SELECT  sales.customer_id,menu.Product_name,
+DENSE_RANK() OVER(PARTITION BY sales.customer_id ORDER BY sales.order_date) AS rnk
+FROM sales
+JOIN menu ON
+sales.Product_id = menu.Product_id) AS sales_rnk
+WHERE rnk = 1
+GROUP BY customer_id,product_name;
+```
+for customer A we have two food items.
 
+- What is the most purchased item on the menu and how many times was it ?
+```
+SELECT sales.Product_id, COUNT(*) AS Product_count,menu.product_name
+FROM sales
+INNER JOIN menu ON
+sales.product_id = menu.product_id
+GROUP BY Product_id,product_name
+ORDER BY Product_count DESC
+LIMIT 1;
+```
+- Which item was the most popular for each customer ?
+```
+SELECT customer_id, sales.Product_id,COUNT(*) AS category_count,menu.product_name
+FROM sales
+LEFT JOIN menu ON sales.product_id = menu.product_id
+GROUP BY Product_id,Customer_id,product_name
+ORDER BY category_count DESC
+;
+```
+- I created a table from multiple tables so the employees can easily access all the information of their customers, showing their member type.
+```
+CREATE TABLE DANNYS AS (
+SELECT sales.Customer_id,sales.Order_date,menu.Product_name,menu.price,
+ CASE 
+	WHEN (sales.customer_id = 'A' AND datediff(members.join_date,sales.Order_date) <= 0 ) THEN 'Y'
+	WHEN (sales.customer_id = 'A' AND datediff(members.join_date,sales.Order_date) > 0) THEN 'N'
+	WHEN (sales.customer_id = 'B' AND datediff(members.join_date,sales.Order_date) <= 0) THEN 'Y'
+	WHEN (sales.customer_id = 'B' AND datediff(members.join_date,sales.Order_date) > 0) THEN 'N'
+	ELSE 'N'
+    -- N means not a member, Y means a member
+END AS member_type
+FROM sales
+LEFT JOIN menu ON
+sales.Product_id = menu.Product_id
+LEFT JOIN members ON
+(sales.Product_id= menu.Product_id AND sales.Customer_id = members.customer_id)
+);
+```
+- Which item was purchased first by the customer after they became a member ?
+```
+SELECT customer_id,product_name AS first_purchased_product,rnk 
+FROM 
+	(SELECT  dannys.customer_id,dannys.Product_name,dannys.member_type,
+	DENSE_RANK() OVER(PARTITION BY customer_id ORDER BY order_date) AS rnk
+	FROM dannys
+	INNER JOIN members ON dannys.customer_id = members.customer_id
+	WHERE member_type = 'Y' AND dannys.order_date > members.join_date) AS dannys_rnk
+WHERE rnk = 1
+GROUP BY customer_id,product_name;
+```
+- Which item was purchased first just  before the customer became a member ?
+```
+SELECT customer_id,product_name AS first_purchased_product,rnk 
+FROM 
+	(SELECT  dannys.customer_id,dannys.Product_name,dannys.member_type,
+	DENSE_RANK() OVER(PARTITION BY customer_id ORDER BY order_date) AS rnk
+	FROM dannys
+	INNER JOIN members ON dannys.customer_id = members.customer_id
+	WHERE member_type = 'N' AND dannys.order_date < members.join_date) AS dannys_rnk
+WHERE rnk = 1
+GROUP BY customer_id,product_name;
+```
+- What is the total items and amount spent for each member before they became a member ?
+```
+SELECT dannys.customer_id,COUNT(dannys.Product_name) AS Total_items,sum(dannys.price) AS Total_price
+FROM DANNYS
+INNER JOIN members ON
+dannys.customer_id = members.customer_id
+WHERE member_type = 'N' 
+AND
+order_date < join_date
+GROUP BY customer_id;
+```
+- If each $1 spent equates to 10 points and sushi has a 2x points multiplier,how many points would each customer have ?
+Therefore we calculate for points having the product name as sushi would be multiplying by 20 otherwise we multiply by 10
+```
+SELECT customer_id,SUM(points) AS total_points 
+FROM
+	(SELECT customer_id,Product_name,price,
+		CASE 
+			WHEN Product_name = 'sushi' THEN price * 20
+			ELSE price * 10
+		END AS points
+	FROM DANNYS
+    ORDER BY customer_id) AS 2_points_table
+GROUP BY 1;
+```
+- In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January ?
+```
+SELECT customer_id,SUM(price) AS total_price,SUM(points) AS total_points 
+	FROM 
+		(SELECT dannys.customer_id,dannys.Product_name,dannys.price,dannys.order_date,
+		SUM(CASE 
+			WHEN order_date BETWEEN members.join_date AND DATE_ADD(members.join_date,INTERVAL 6 DAY) THEN dannys.price*20
+		ELSE 
+			CASE WHEN dannys.product_name = 'sushi' THEN dannys.price * 20
+			ELSE dannys.price * 10
+            END
+		END) AS points
+	FROM dannys
+    INNER JOIN members ON
+    dannys.customer_id = members.customer_id
+    WHERE order_date <= '2021-01-31' AND dannys.customer_id IN ('A','B')
+    GROUP BY 1,2,3,4
+	ORDER BY order_date 
+    ) AS new_points_to_end_of_january 
+GROUP BY customer_id;
+```
 
 ## Findings And Solutions 
