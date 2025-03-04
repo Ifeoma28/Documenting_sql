@@ -226,3 +226,4 @@ GROUP BY customer_id;
 - This shows that increasing the points customer accrue on purchasing Sushi would boost sales more because customers purchase of Sushi did not change after joining the program.
 - Products that are least purchased should have higher points so customers would purchase them more.
 - Danny could carry out surveys occassionally to know their customer preferences and also opinions on the overall taste of the food to help the restaurant keep up
+- More incentives like freebies and promo should be added to the loyalty program to boost sales 
